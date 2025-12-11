@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Bunnings Agentic Commerce</title>
+    <style>
+      /* Bunnings Brand Colors & Modern Design */
+      :root {
+        --bunnings-green: #0d7f3f;
+        --bunnings-dark-green: #006837;
+        --bunnings-red: #d92228;
+        --bunnings-light-bg: #f7f7f7;
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8f9fa;
+        --text-primary: #1a1a1a;
+        --text-secondary: #666666;
+        --border-color: #e5e5e5;
+        --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+        --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+        --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+        background: var(--bunnings-light-bg);
+        color: var(--text-primary);
+        line-height: 1.6;
+        padding: 0;
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      /* Header - Bunnings Branding */
+      .header {
+        background: var(--bunnings-green);
+        color: white;
+        padding: 20px 24px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+
+      .logo-icon {
+        width: 48px;
+        height: 48px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      }
+
+      .logo-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+
+      .logo-subtitle {
+        font-size: 11px;
+        font-weight: 400;
+        opacity: 0.9;
+        letter-spacing: 1px;
+      }
+
+      .cart-badge {
+        background: var(--bunnings-orange);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 24px;
+        font-weight: 600;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 2px 12px rgba(247, 127, 0, 0.4);
+        transition: all 0.3s ease;
+      }
+
+      .cart-badge:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 16px rgba(247, 127, 0, 0.5);
+      }
+
+      /* Main Container */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      /* Welcome Banner */
+      .welcome-banner {
+        background: white;
+        border-radius: 0;
+        padding: 32px 40px;
+        margin-bottom: 28px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        text-align: center;
+        border-left: 4px solid var(--bunnings-green);
+      }
+
+      .welcome-banner h1 {
+        font-size: 28px;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+
+      .welcome-banner p {
+        color: var(--text-secondary);
+        font-size: 15px;
+        font-weight: 400;
+      }
+
+      /* Product Grid */
+      .products-section {
+        margin-bottom: 32px;
+      }
+
+      .section-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .product-count {
+        font-size: 16px;
+        color: var(--text-secondary);
+        font-weight: 400;
+      }
+
+      .products-grid {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+        padding: 10px 0 20px 0;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* Custom scrollbar styling */
+      .products-grid::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .products-grid::-webkit-scrollbar-track {
+        background: #e9ecef;
+        border-radius: 10px;
+      }
+
+      .products-grid::-webkit-scrollbar-thumb {
+        background: var(--bunnings-green);
+        border-radius: 10px;
+      }
+
+      .products-grid::-webkit-scrollbar-thumb:hover {
+        background: var(--bunnings-dark-green);
+      }
+
+      /* Product Card - ChatGPT Style */
+      .product-card {
+        background: white;
+        border-radius: 0;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        border: 1px solid var(--border-color);
+        position: relative;
+        min-width: 320px;
+        max-width: 320px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .product-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--bunnings-green);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border-color: var(--bunnings-green);
+      }
+
+      .product-card:hover::before {
+        opacity: 1;
+      }
+
+      .product-image {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        transition: transform 0.3s ease;
+      }
+
+      .product-card:hover .product-image {
+        transform: scale(1.05);
+      }
+
+      .product-info {
+        padding: 18px;
+        position: relative;
+      }
+
+      .stock-badge {
+        position: absolute;
+        top: -10px;
+        right: 18px;
+        background: var(--bunnings-green);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 2px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .product-category {
+        font-size: 12px;
+        color: var(--text-secondary);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+      }
+
+      .product-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+        line-height: 1.4;
+      }
+
+      .product-description {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 12px;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .product-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 12px;
+        border-top: 1px solid var(--border-color);
+        margin-bottom: 12px;
+      }
+
+      .product-price {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--bunnings-red);
+      }
+
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 14px;
+        color: #f5a623;
+      }
+
+      /* Action Buttons */
+      .product-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 12px 16px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .btn-primary {
+        background: var(--bunnings-green);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: var(--bunnings-dark-green);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(13, 127, 63, 0.3);
+      }
+
+      .btn-secondary {
+        background: var(--bunnings-red);
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background: #b91c22;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(217, 34, 40, 0.3);
+      }
+
+      /* Shopping Cart */
+      .cart-section {
+        background: white;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 4px 20px rgba(230, 57, 70, 0.12);
+        margin-bottom: 28px;
+        border: 2px solid #ffe5e7;
+      }
+
+      .cart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid var(--border-color);
+      }
+
+      .cart-item {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 16px;
+        padding: 16px;
+        background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+        border-radius: 14px;
+        margin-bottom: 14px;
+        align-items: center;
+        border: 1px solid #ffe5e7;
+        transition: all 0.3s ease;
+      }
+
+      .cart-item:hover {
+        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.1);
+        transform: translateX(4px);
+      }
+
+      .cart-item-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .cart-item-details {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .cart-item-controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 8px;
+      }
+
+      .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: white;
+        padding: 4px 8px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+      }
+
+      .quantity-btn {
+        background: var(--bunnings-green);
+        color: white;
+        border: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+      }
+
+      .quantity-btn:hover {
+        background: var(--bunnings-dark-green);
+      }
+
+      .quantity-display {
+        min-width: 30px;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .remove-btn {
+        background: var(--bunnings-red);
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+      }
+
+      .remove-btn:hover {
+        background: #b91c22;
+      }
+
+      .cart-item-name {
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .cart-item-price {
+        color: var(--bunnings-red);
+        font-weight: 600;
+      }
+
+      .cart-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 28px;
+        background: linear-gradient(135deg, var(--bunnings-red) 0%, #b91c22 100%);
+        color: white;
+        border-radius: 16px;
+        font-size: 22px;
+        font-weight: 700;
+        margin-top: 20px;
+        box-shadow: 0 6px 20px rgba(230, 57, 70, 0.3);
+      }
+
+      .checkout-button {
+        width: 100%;
+        padding: 16px;
+        background: var(--bunnings-green);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(13, 127, 63, 0.3);
+      }
+
+      .checkout-button:hover {
+        background: var(--bunnings-dark-green);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(13, 127, 63, 0.4);
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        color: var(--text-secondary);
+        min-width: 100%;
+      }
+
+      .empty-state-icon {
+        font-size: 80px;
+        margin-bottom: 20px;
+        opacity: 0.6;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+
+      .cart-badge.has-items {
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      .empty-state h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: var(--text-primary);
+        font-weight: 700;
+      }
+
+      .empty-state p {
+        font-size: 17px;
+        color: var(--text-secondary);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .products-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .header-content {
+          flex-direction: column;
+          gap: 12px;
+        }
+        
+        .welcome-banner {
+          padding: 24px 16px;
+        }
+        
+        .welcome-banner h1 {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header with Bunnings Branding -->
+    <div class="header">
+      <div class="header-content">
+        <div class="logo">
+          <div class="logo-icon">🔨</div>
+          <div class="logo-text">
+            <span>BUNNINGS</span>
+            <span class="logo-subtitle">WAREHOUSE</span>
+          </div>
+        </div>
+        <div class="cart-badge" style="display: none;">
+          <span>🛒</span>
+          <span id="cart-count">0 items</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+      <!-- Welcome Banner -->
+      <div class="welcome-banner">
+        <h1>Featured Products</h1>
+        <p>Quality tools and hardware for every project</p>
+      </div>
+
+      <!-- Shopping Cart -->
+      <div id="cart-section" class="cart-section" style="display: none;">
+        <div class="cart-header">
+          <h2 class="section-title">🛒 Shopping Cart</h2>
+        </div>
+        <div id="cart-items"></div>
+        <div class="cart-total">
+          <span>Total:</span>
+          <span id="cart-total">$0.00</span>
+        </div>
+        <button class="checkout-button" onclick="window.proceedToCheckout()">
+          💳 Proceed to Payment
+        </button>
+      </div>
+
+      <!-- Products Section -->
+      <div class="products-section">
+        <h2 class="section-title">
+          <span>Products</span>
+          <span class="product-count" id="product-count"></span>
+        </h2>
+        <div id="products-grid" class="products-grid">
+          <!-- Empty state - shows when no products -->
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <div class="empty-state-icon">🔍</div>
+            <h3>Ready to help!</h3>
+            <p>Ask the AI assistant to search for products you need</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      // State management - gets updated from server responses
+      let products = [];
+      let cart = [];
+      let cartTotal = 0;
+
+      // DOM elements
+      const productsGrid = document.getElementById('products-grid');
+      const cartSection = document.getElementById('cart-section');
+      const cartItems = document.getElementById('cart-items');
+      const cartTotalEl = document.getElementById('cart-total');
+      const cartCountEl = document.getElementById('cart-count');
+      const productCountEl = document.getElementById('product-count');
+
+      /**
+       * Add product to cart
+       */
+      const addToCart = (productId) => {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+
+        const existingItem = cart.find(item => item.id === productId);
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            quantity: 1
+          });
+        }
+
+        updateCart();
+        showNotification(`Added ${product.name} to cart!`);
+      };
+
+      /**
+       * Buy now - adds to cart and shows checkout message
+       */
+      const buyNow = (productId) => {
+        addToCart(productId);
+        showNotification('Proceeding to checkout...', 'success');
+      };
+
+      /**
+       * Update cart display
+       */
+      const updateCart = () => {
+        cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        renderCart();
+      };
+
+      /**
+       * Remove item from cart
+       */
+      const removeFromCart = (productId) => {
+        cart = cart.filter(item => item.id !== productId);
+        updateCart();
+        showNotification('Item removed from cart');
+      };
+
+      /**
+       * Change quantity of item in cart
+       */
+      const changeQuantity = (productId, delta) => {
+        const item = cart.find(item => item.id === productId);
+        if (!item) return;
+        
+        item.quantity += delta;
+        if (item.quantity <= 0) {
+          removeFromCart(productId);
+        } else {
+          updateCart();
+        }
+      };
+
+      /**
+       * Proceed to checkout
+       */
+      const proceedToCheckout = () => {
+        if (cart.length === 0) {
+          showNotification('Your cart is empty!', 'info');
+          return;
+        }
+        
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        showNotification(`Processing payment for ${totalItems} items ($${cartTotal.toFixed(2)})...`, 'success');
+        
+        // Simulate payment processing
+        setTimeout(() => {
+          showNotification('Payment successful! Thank you for shopping at Bunnings! 🎉', 'success');
+          cart = [];
+          updateCart();
+        }, 2000);
+      };
+
+      /**
+       * Show notification toast
+       */
+      const showNotification = (message, type = 'info') => {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: ${type === 'success' ? '#0d7f3f' : '#1a1a1a'};
+          color: white;
+          padding: 16px 24px;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+          z-index: 1000;
+          animation: slideIn 0.3s ease;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.style.animation = 'slideOut 0.3s ease';
+          setTimeout(() => notification.remove(), 300);
+        }, 3000);
+      };
+
+      // Add animation styles
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes slideIn {
+          from { transform: translateX(400px); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+          from { transform: translateX(0); opacity: 1; }
+          to { transform: translateX(400px); opacity: 0; }
+        }
+      `;
+      document.head.appendChild(style);
+
+      /**
+       * Render product cards in a beautiful grid layout
+       * Each card shows product image, name, price, and details
+       */
+      const renderProducts = () => {
+        if (products.length === 0) {
+          productsGrid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1 / -1;">
+              <div class="empty-state-icon">🛠️</div>
+              <h3>Browse Our Catalog</h3>
+              <p>Search for drills, hammers, and quality tools</p>
+            </div>
+          `;
+          productCountEl.textContent = '';
+          return;
+        }
+
+        productCountEl.textContent = `(${products.length} found)`;
+        
+        // Create a product card for each item
+        productsGrid.innerHTML = products.map(product => `
+          <div class="product-card" data-product-id="${product.id}">
+            <img src="${product.image}" alt="${product.name}" class="product-image" 
+                 onerror="this.src='https://via.placeholder.com/400x300/007934/ffffff?text=Bunnings+Product'">
+            <div class="product-info">
+              ${product.inStock ? '<div class="stock-badge">✓ In Stock</div>' : ''}
+              <div class="product-category">${product.category}</div>
+              <div class="product-name">${product.name}</div>
+              <div class="product-description">${product.description}</div>
+              <div class="product-footer">
+                <div class="product-price">$${product.price.toFixed(2)}</div>
+                <div class="rating">
+                  <span>⭐</span>
+                  <span>${product.rating}</span>
+                </div>
+              </div>
+              <div class="product-actions">
+                <button class="btn btn-primary" onclick="window.addToCart('${product.id}')">
+                  🛒 Add to Cart
+                </button>
+                <button class="btn btn-secondary" onclick="window.buyNow('${product.id}')">
+                  ✓ Buy Now
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      };
+
+      // Expose functions to global scope for onclick handlers
+      window.addToCart = addToCart;
+      window.buyNow = buyNow;
+      window.removeFromCart = removeFromCart;
+      window.changeQuantity = changeQuantity;
+      window.proceedToCheckout = proceedToCheckout;
+
+      /**
+       * Render shopping cart with all added items
+       * Shows product thumbnails, quantities, and prices
+       */
+      const renderCart = () => {
+        if (cart.length === 0) {
+          cartSection.style.display = 'none';
+          cartCountEl.textContent = '0 items';
+          cartCountEl.parentElement.classList.remove('has-items');
+          return;
+        }
+
+        cartSection.style.display = 'block';
+        
+        // Calculate total items
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCountEl.textContent = `${totalItems} ${totalItems === 1 ? 'item' : 'items'}`;
+        cartCountEl.parentElement.classList.add('has-items');
+        
+        // Render cart items
+        cartItems.innerHTML = cart.map(item => `
+          <div class="cart-item">
+            <img src="${item.image}" alt="${item.name}" class="cart-item-image"
+                 onerror="this.src='https://via.placeholder.com/80x80?text=Product'">
+            <div class="cart-item-details">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">$${item.price.toFixed(2)} each</div>
+              <div class="cart-item-controls">
+                <div class="quantity-controls">
+                  <button class="quantity-btn" onclick="window.changeQuantity('${item.id}', -1)">−</button>
+                  <span class="quantity-display">${item.quantity}</span>
+                  <button class="quantity-btn" onclick="window.changeQuantity('${item.id}', 1)">+</button>
+                </div>
+                <div style="flex: 1; text-align: right; font-weight: 600; color: var(--bunnings-red);">
+                  $${(item.quantity * item.price).toFixed(2)}
+                </div>
+                <button class="remove-btn" onclick="window.removeFromCart('${item.id}')">Remove</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+        
+        // Update total
+        cartTotalEl.textContent = `$${cartTotal.toFixed(2)}`;
+      };
+
+      /**
+       * Update UI from server response
+       * This is called whenever the AI assistant uses a tool
+       */
+      const updateFromResponse = (response) => {
+        if (!response?.structuredContent) return;
+        
+        const data = response.structuredContent;
+        
+        // Update products if returned from search
+        if (data.products !== undefined) {
+          products = data.products;
+          renderProducts();
+        }
+        
+        // Update cart if modified
+        if (data.cart !== undefined) {
+          cart = data.cart;
+          cartTotal = data.cartTotal || 0;
+          renderCart();
+        }
+      };
+
+      /**
+       * Handle global state updates from OpenAI
+       * This is triggered when the widget loads or refreshes
+       */
+      const handleSetGlobals = (event) => {
+        const globals = event.detail?.globals;
+        if (!globals?.toolOutput) return;
+        
+        updateFromResponse({ structuredContent: globals.toolOutput });
+      };
+
+      // Listen for global state updates
+      window.addEventListener('openai:set_globals', handleSetGlobals, {
+        passive: true,
+      });
+
+      /**
+       * Call a tool through the AI assistant API
+       * This is used if we want to programmatically trigger actions
+       */
+      const callTool = async (name, payload) => {
+        if (window.openai?.callTool) {
+          const response = await window.openai.callTool(name, payload);
+          updateFromResponse(response);
+        }
+      };
+
+      // Initialize the UI with any existing data
+      if (window.openai?.toolOutput) {
+        updateFromResponse({ structuredContent: window.openai.toolOutput });
+      }
+
+      // Initial render
+      renderProducts();
+      renderCart();
+    </script>
+  </body>
+</html>
