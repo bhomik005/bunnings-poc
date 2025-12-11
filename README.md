@@ -1,6 +1,6 @@
 # 🔨 Bunnings Agentic Commerce
 
-An AI-powered shopping assistant for Bunnings Warehouse built using the Model Context Protocol (MCP).
+An AI-powered shopping assistant for Bunnings Warehouse built using the [OpenAI Apps SDK](https://developers.openai.com/apps-sdk/).
 
 ## 🚀 How to Run
 
@@ -18,8 +18,6 @@ An AI-powered shopping assistant for Bunnings Warehouse built using the Model Co
    ```bash
    # Using ngrok
    ngrok http 8787
-   
-   # Or use any other tunneling service (cloudflare tunnel, localtunnel, etc.)
    ```
 
 ## 🤖 Add Your App to ChatGPT
@@ -37,7 +35,7 @@ Once your server is running and exposed via HTTPS tunnel:
 ## 💡 Usage Examples
 
 Ask the AI assistant:
-- "Show me all drills"
+- "I am looking to buy a drill"
 - "Find me a hammer"
 ---
 
